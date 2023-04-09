@@ -5,7 +5,6 @@ function Transaction(props) {
     props.deleteTransaction(props.transaction._id);
   };
   const amountStyle = () => {
-    let nameOfClass;
     if (props.transaction.amount > 0) {
       return "greenAmount";
     } else {

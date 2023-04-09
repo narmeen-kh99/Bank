@@ -22,9 +22,24 @@ function BreakDown(props) {
     }
     setSumCategory(sumOfCategory);
   };
+
+  const [test, setTest] = useState(true);
+  const fetchCategory = async () => {
+    try {
+      if (test) {
+        sumOfTransactionsByCategory();
+        setTest(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    setTest(false);
+  };
   useEffect(() => {
-    sumOfTransactionsByCategory();
-  }, []);
+    if (test) {
+      fetchCategory();
+    }
+  }, [test]);
   return (
     <div className="breakDown-container">
       <h1>BreakDown</h1>

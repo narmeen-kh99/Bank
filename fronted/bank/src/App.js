@@ -1,7 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
-
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import BankNavBar from "./components/bankNavBar/BankNavBar";
@@ -13,10 +11,10 @@ function App() {
   const [balance, setBalance] = useState(0);
 
   const getDataFromDB = async () => {
-    let arrDataDB = [];
+    let currentTransactions = [];
     await axios.get("http://localhost:4300/transactions").then((response) => {
-      arrDataDB = [...response.data];
-      setBankData(arrDataDB);
+      currentTransactions = [...response.data];
+      setBankData(currentTransactions);
       getBalance();
     });
   };
@@ -60,7 +58,6 @@ function App() {
           path="/"
           element={
             <Transactions
-              key={"Transactions"}
               deleteTransaction={deleteTransaction}
               transactions={bankData}
             />
@@ -68,16 +65,11 @@ function App() {
         ></Route>
         <Route
           path="/Operations"
-          element={
-            <Operations
-              key={"Operations"}
-              createTransaction={createTransaction}
-            />
-          }
+          element={<Operations createTransaction={createTransaction} />}
         ></Route>
         <Route
           path="/Category"
-          element={<BreakDown key={"Category"} transactions={bankData} />}
+          element={<BreakDown transactions={bankData} />}
         ></Route>
       </Routes>
     </Router>

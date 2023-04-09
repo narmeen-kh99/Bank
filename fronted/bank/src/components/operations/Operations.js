@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import { Redirect } from "react-router-dom";
 import "./Operations.css";
 
 function Operations(props) {
