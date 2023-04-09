@@ -30,4 +30,31 @@ router.delete("/transaction/:id", async (req, res) => {
   res.send(transaction);
 });
 
+router.get("/transaction/category", async (req, res) => {
+  let sumOfCategory = {};
+  try {
+    const transactions = await Transaction.find({});
+    sumOfCategory = sumOfTransactionsByCategory(transactions);
+    res.send(sumOfCategory);
+  } catch (error) {
+    res.send(error);
+  }
+});
+const sumOfTransactionsByCategory = (transactions) => {
+  let sumOfCategory = {};
+  let transactionsDataLength = transactions.length;
+  let transactionsData = [...transactions];
+  for (let i = 0; i < transactionsDataLength; i++) {
+    let transaction = transactionsData[i]._doc;
+    let category = transaction.category;
+    let amount = transaction.amount;
+
+    if (!sumOfCategory[category]) {
+      sumOfCategory[category] = amount;
+    } else {
+      sumOfCategory[category] += amount;
+    }
+  }
+  return sumOfCategory;
+};
 module.exports = router;
