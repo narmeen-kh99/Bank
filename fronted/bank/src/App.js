@@ -9,6 +9,7 @@ import BreakDown from "./components/breakDown/BreakDown";
 function App() {
   const [bankData, setBankData] = useState([]);
   const [balance, setBalance] = useState(0);
+  const [sumOfCategory, setSumOfCategory] = useState({});
 
   const getDataFromDB = async () => {
     let currentTransactions = [];
@@ -24,6 +25,15 @@ function App() {
       totalAmount += bankData[i].amount;
     }
     setBalance(totalAmount);
+  };
+  const getSumOfCategory = async () => {
+    let sumCategory = {};
+    await axios
+      .get("http://localhost:4300/transaction/category")
+      .then((response) => {
+        sumCategory = response.data;
+        setSumOfCategory(sumCategory);
+      });
   };
 
   const deleteTransaction = (id) => {
@@ -47,6 +57,7 @@ function App() {
 
   useEffect(() => {
     getDataFromDB();
+    getSumOfCategory();
   });
   return (
     <Router>
@@ -69,7 +80,12 @@ function App() {
         ></Route>
         <Route
           path="/Category"
-          element={<BreakDown transactions={bankData} />}
+          element={
+            <BreakDown
+              sumOfCategory={sumOfCategory}
+              setSumOfCategory={setSumOfCategory}
+            />
+          }
         ></Route>
       </Routes>
     </Router>

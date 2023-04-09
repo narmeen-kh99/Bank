@@ -3,51 +3,14 @@ import "./BreakDown.css";
 import { useEffect, useState } from "react";
 
 function BreakDown(props) {
-  const [sumCategory, setSumCategory] = useState({});
-  const sumOfTransactionsByCategory = () => {
-    let sumOfCategory = sumCategory;
-    let transactionsDataLength = props.transactions.length;
-    let transactionsData = [...props.transactions];
-
-    for (let i = 0; i < transactionsDataLength; i++) {
-      let transaction = transactionsData[i];
-      let category = transaction.category;
-      let amount = transaction.amount;
-
-      if (!sumCategory[category]) {
-        sumOfCategory[category] = amount;
-      } else {
-        sumOfCategory[category] += amount;
-      }
-    }
-    setSumCategory(sumOfCategory);
-  };
-
-  const [test, setTest] = useState(true);
-  const fetchCategory = async () => {
-    try {
-      if (test) {
-        sumOfTransactionsByCategory();
-        setTest(false);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    setTest(false);
-  };
-  useEffect(() => {
-    if (test) {
-      fetchCategory();
-    }
-  }, [test]);
   return (
     <div className="breakDown-container">
       <h1>BreakDown</h1>
       <p>
-        {Object.keys(sumCategory).map((c, i) => (
+        {Object.keys(props.sumOfCategory).map((c, i) => (
           <div>
             <p className="categoryBreakDown">
-              {c} : {sumCategory[c]}
+              {c} : {props.sumOfCategory[c]}
             </p>
           </div>
         ))}
